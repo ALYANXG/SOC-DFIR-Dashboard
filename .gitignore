@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite Database
+*.db
+*.sqlite3
+Backend/sentinel.db
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+
+# IDE / Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large binary dependencies / Portable utilities
+nmap-portable/
+scan.xml
+
+# Backup & scratch files
+*_backup_*.*
+*.bak
+*.tmp
+scratch/
+test_live.xml
+
+# OS generated files
+.DS_Store
+Thumbs.db
