@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SENTINEL // TACTICAL SOC & DFIR WAR-ROOM</title>
+
+    <link rel="stylesheet" href="style.css?v=tactical_war_room_v2">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+</head>
+
+
+<body>
+
+<div class="app-shell">
+
+
+    <!-- ================= TACTICAL SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                <span></span>
+                <span></span>
+            </div>
+
+            <div>
+                <h1>SENTINEL</h1>
+                <p>SOC // DFIR WAR-ROOM</p>
+            </div>
+
+        </div>
+
+
+        <div class="environment">
+
+            <span class="status-dot"></span>
+
+            <span>TACTICAL GRID</span>
+
+            <b>DEFCON LIVE</b>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <div class="nav-label">
+                COMMAND
+            </div>
+
+
+            <a href="#" class="nav-item active">
+                <span>◈</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⬡</span>
+                <span>Attack Path</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>◉</span>
+                <span>Alerts</span>
+                <em id="alerts-count">--</em>
+            </a>
+
+
+            <a href="#" class="nav-item">
+                <span>▣</span>
+                <span>Cases</span>
+                <em id="sidebar-cases-count">--</em>
+            </a>
+
+
+            <a href="#" class="nav-item">
+                <span>⌁</span>
+                <span>Timeline</span>
+            </a>
+
+
+            <div class="nav-label">
+                FORENSICS & INTEL
+            </div>
+
+
+            <a href="#" class="nav-item">
+                <span>⬡</span>
+                <span>Endpoints</span>
+            </a>
+
+
+            <a href="#" class="nav-item">
+                <span>◌</span>
+                <span>Evidence</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⚡</span>
+                <span>SSH Triage</span>
+            </a>
+
+
+            <a href="#" class="nav-item">
+                <span>◆</span>
+                <span>CVE Lookup</span>
+                <em id="sidebar-cve-count">--</em>
+            </a>
+
+
+            <a href="#" class="nav-item">
+                <span>⊞</span>
+                <span>MITRE ATT&CK</span>
+            </a>
+
+
+            <div class="nav-label">
+                BRIEFINGS
+            </div>
+
+
+            <a href="#" class="nav-item">
+                <span>▤</span>
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="analyst-card">
+
+                <div class="avatar">
+                    OP
+                </div>
+
+                <div>
+                    <strong>DFIR OPERATOR</strong>
+                    <small>CALLSIGN // VIPER-1</small>
+                </div>
+
+                <span>•••</span>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= TOPBAR ================= -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="breadcrumb">
+                    DEFENSE OPERATIONS
+                    <span>/</span>
+                    TACTICAL HUD TELEMETRY
+                </div>
+
+                <h2>Tactical Command Center</h2>
+
+                <p>
+                    Autonomous threat interception, attack path telemetry, and digital forensics HUD.
+                </p>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button id="notification-button" class="icon-button" title="System Notifications">
+                   ◌
+                <span class="notification-dot"></span>
+                </button>
+
+
+                <button id="new-case-button" class="scan-button">
+                    <span>+</span>
+                    NEW CASE
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= DEFCON SYSTEM STRIP ================= -->
+
+        <section class="system-strip">
+
+
+            <div class="system-item">
+
+                <span class="status-dot"></span>
+
+                <div>
+                    <small>SIEM TELEMETRY</small>
+                    <strong>OPERATIONAL // GRID 01</strong>
+                </div>
+
+            </div>
+
+
+            <div class="system-item">
+
+                <span class="status-dot"></span>
+
+                <div>
+                    <small>INTERROGATION PROBE</small>
+                    <strong>NMAP ENGINE ONLINE</strong>
+                </div>
+
+            </div>
+
+
+            <div class="system-item">
+
+                <span class="status-dot warning"></span>
+
+                <div>
+                    <small>THREAT STATUS</small>
+                    <strong id="active-incidents-strip">STANDBY // READY</strong>
+                </div>
+
+            </div>
+
+
+            <div class="system-time">
+
+                <small>ZULU / LOCAL TIME</small>
+
+                <strong id="clock">
+                    00:00:00
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= METRICS HUD ================= -->
+
+        <section class="metrics-grid">
+
+
+            <div class="metric-card critical-card">
+
+                <div class="metric-top">
+                    <span>CRITICAL EXPLOITS</span>
+                    <span class="metric-icon">!</span>
+                </div>
+
+                <div
+                    class="metric-value"
+                    id="critical-alert-count"
+                >
+                    --
+                </div>
+
+                <div class="metric-footer">
+                    <span class="trend danger">DEFCON 1</span>
+                    <span>high severity vectors</span>
+                </div>
+
+            </div>
+
+
+
+            <div class="metric-card">
+
+                <div class="metric-top">
+                    <span>OPEN CASES</span>
+                    <span class="metric-icon">▣</span>
+                </div>
+
+                <div class="metric-value" id="cases-count">
+                    --
+                </div>
+
+                <div class="metric-footer">
+                    <span class="trend" id="high-priority-count">--</span>
+                    <span>active investigations</span>
+                </div>
+
+            </div>
+
+
+
+            <div class="metric-card">
+
+                <div class="metric-top">
+                    <span>HOST TARGETS</span>
+                    <span class="metric-icon">⬡</span>
+                </div>
+
+                <div
+                    class="metric-value"
+                    id="endpoint-count"
+                >
+                    --
+                </div>
+
+                <div class="metric-footer">
+                    <span class="trend safe">PROBE</span>
+                    <span>network nodes</span>
+                </div>
+
+            </div>
+
+
+
+            <div class="metric-card">
+
+                <div class="metric-top">
+                    <span>FORENSIC EVIDENCE</span>
+                    <span class="metric-icon">◌</span>
+                </div>
+
+                <div class="metric-value" id="evidence-count">
+                 --
+                </div>
+
+                <div class="metric-footer">
+                    <span class="trend" id="evidence-week">
+                     +--
+                    </span>
+                    <span>chain of custody</span>
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= TARGET INTERROGATION PANEL ================= -->
+
+        <section class="panel scan-panel">
+
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-kicker">
+                        TARGET INTERROGATION // PROBE
+                    </span>
+
+                    <h2>
+                        Endpoint Exposure Interrogation
+                    </h2>
+
+                </div>
+
+
+                <div class="scan-status">
+
+                    <select id="asset-selector" title="Quick Asset Preset Selector">
+                        <option value="">[ SELECT TARGET ASSET ▾ ]</option>
+                        <option value="192.168.70.130">Metasploitable 2 (192.168.70.130) [HIGH RISK LAB]</option>
+                        <option value="192.168.1.9">Windows PC (192.168.1.9) [PERIMETER SECURE]</option>
+                        <option value="192.168.70.1">VMware Gateway (192.168.70.1) [INFRASTRUCTURE]</option>
+                    </select>
+
+                    <input 
+                        type="text" 
+                        id="scan-target-input" 
+                        value="" 
+                        placeholder="Enter Target IP (e.g. 192.168.70.130)..." 
+                    />
+
+                    <button
+                        id="refresh-scan"
+                        class="scan-refresh"
+                    >
+                        [ INITIATE PROBE / SCAN ]
+                    </button>
+
+                    <span class="status-dot"></span>
+
+                    LIVE
+
+                </div>
+
+            </div>
+
+
+
+            <div class="scan-summary">
+
+
+                <div class="scan-box">
+
+                    <span>TARGET IP</span>
+
+                    <strong id="scan-target">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="scan-box">
+
+                    <span>HOST STATUS</span>
+
+                    <strong id="scan-status">
+                        STANDBY
+                    </strong>
+
+                </div>
+
+
+                <div class="scan-box">
+
+                    <span>OPEN PORTS</span>
+
+                    <strong id="scan-ports">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="scan-box">
+
+                    <span>CRITICAL SERVICES</span>
+
+                    <strong id="scan-critical">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="scan-box">
+
+                    <span>LAST PROBE</span>
+
+                    <strong id="scan-time">
+                        --:--:--
+                    </strong>
+
+                </div>
+
+
+            </div>
+              
+
+           
+            <div class="port-table-wrapper">
+
+                <table class="port-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>PORT</th>
+                            <th>PROTO</th>
+                            <th>SERVICE NAME</th>
+                            <th>SOFTWARE PRODUCT</th>
+                            <th>VERSION</th>
+                            <th>STATUS</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="port-table-body">
+
+                        <tr>
+
+                            <td colspan="6" style="text-align: center; color: var(--text-dim); padding: 22px;">
+                                Awaiting scan data... Enter a target IP above and click <strong>[ INITIATE PROBE / SCAN ]</strong>.
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= STAR FEATURE: ATTACK PATH & NETWORK TOPOLOGY GRAPH ================= -->
+
+        <section class="attack-graph-panel" id="attack-path-section">
+
+            <div class="panel-header">
+
+                <div>
+                    <span class="eyebrow">
+                        TACTICAL VISUALIZER
+                    </span>
+
+                    <h3>
+                        Interactive Attack Path & Network Topology
+                    </h3>
+                </div>
+
+                <span class="cve-live">
+                    ● RADAR SWEEP ACTIVE
+                </span>
+
+            </div>
+
+
+            <div class="attack-graph-container">
+
+                <div class="radar-sweep-grid"></div>
+                <div class="radar-sweep-beam"></div>
+
+                <svg id="attack-path-svg" viewBox="0 0 1000 380" preserveAspectRatio="xMidYMid meet">
+                    <!-- Dynamic Attack Graph will be rendered here by app.js -->
+                </svg>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= ENDPOINT MONITORING ================= -->
+
+        <section class="panel endpoint-panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <span class="eyebrow">
+                        ENDPOINT SURVEILLANCE
+                    </span>
+
+                    <h3>
+                        Active Host Monitoring
+                    </h3>
+                </div>
+
+                <span class="endpoint-live">
+                    ● TELEMETRY LOCKED
+                </span>
+
+            </div>
+
+
+            <div class="scan-summary">
+
+                <div class="scan-box">
+                    <span>HOST ADDRESS</span>
+                    <strong id="endpoint-target">—</strong>
+                </div>
+
+                <div class="scan-box">
+                    <span>NODE STATE</span>
+                    <strong id="endpoint-state">STANDBY</strong>
+                </div>
+
+                <div class="scan-box">
+                    <span>OPEN PORTS</span>
+                    <strong id="endpoint-ports">0</strong>
+                </div>
+
+                <div class="scan-box">
+                    <span>EXPOSED THREATS</span>
+                    <strong id="endpoint-risk">0</strong>
+                </div>
+
+                <div class="scan-box">
+                    <span>PROBE PROTOCOL</span>
+                    <strong>TCP CONNECT</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= DASHBOARD GRID (THREAT & SEVERITY SIDE-BY-SIDE) ================= -->
+
+        <section class="dashboard-grid">
+
+
+
+            <!-- ================= THREAT ACTIVITY ================= -->
+
+            <div class="panel threat-panel">
+
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TELEMETRY STREAM
+                        </span>
+
+                        <h3>
+                            Threat Activity Vector
+                        </h3>
+
+                    </div>
+
+
+                    <button class="period-button">
+                        REAL-TIME ▾
+                    </button>
+
+                </div>
+
+
+
+                <div class="chart-area">
+
+
+                    <div class="chart-y">
+
+                        <span>100</span>
+                        <span>75</span>
+                        <span>50</span>
+                        <span>25</span>
+                        <span>0</span>
+
+                    </div>
+
+
+
+                    <div class="chart">
+
+
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+
+
+
+                        <svg
+                            viewBox="0 0 800 250"
+                            preserveAspectRatio="none"
+                        >
+
+
+                            <defs>
+
+                                <linearGradient
+                                    id="areaGradient"
+                                    x1="0"
+                                    y1="0"
+                                    x2="0"
+                                    y2="1"
+                                >
+
+                                    <stop
+                                        offset="0%"
+                                        stop-opacity=".45"
+                                    />
+
+                                    <stop
+                                        offset="100%"
+                                        stop-opacity="0"
+                                    />
+
+                                </linearGradient>
+
+                            </defs>
+
+
+
+                            <path
+                                class="chart-area-fill"
+                                d="
+                                M0,210
+                                C60,195 75,210 120,175
+                                C165,140 190,190 230,150
+                                C275,105 300,135 350,120
+                                C405,102 425,145 470,115
+                                C520,82 540,110 585,75
+                                C635,35 650,100 700,70
+                                C750,38 770,60 800,30
+                                L800,250
+                                L0,250
+                                Z
+                                "
+                            ></path>
+
+
+
+                            <path
+                                class="chart-line"
+                                d="
+                                M0,210
+                                C60,195 75,210 120,175
+                                C165,140 190,190 230,150
+                                C275,105 300,135 350,120
+                                C405,102 425,145 470,115
+                                C520,82 540,110 585,75
+                                C635,35 650,100 700,70
+                                C750,38 770,60 800,30
+                                "
+                            ></path>
+
+
+                        </svg>
+
+
+
+                        <div class="chart-tooltip">
+
+                            <small id="event-time">
+                                --:--:--
+                            </small>
+
+                            <strong id="event-count">
+                                0 THREAT EVENTS
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="chart-labels">
+
+                    <span>00:00</span>
+                    <span>04:00</span>
+                    <span>08:00</span>
+                    <span>12:00</span>
+                    <span>16:00</span>
+                    <span>20:00</span>
+                    <span>24:00</span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= SEVERITY HUD ================= -->
+
+            <div class="panel severity-panel">
+
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            THREAT DISPOSITION
+                        </span>
+
+                        <h3>
+                            Severity Distribution
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="severity-content">
+
+
+                    <div class="donut">
+
+                        <div class="donut-inner">
+
+                            <strong id="total-events">
+                                0
+                            </strong>
+
+                            <span>
+                                EVENTS
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="severity-list">
+
+
+                        <div class="severity-row">
+
+                            <span class="severity-name critical">
+                                CRITICAL
+                            </span>
+
+                            <strong id="severity-critical">
+                                00
+                            </strong>
+
+                            <span class="severity-bar">
+
+                                <i
+                                    id="bar-critical"
+                                    style="width:0%"
+                                ></i>
+
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="severity-row">
+
+                            <span class="severity-name high">
+                                HIGH
+                            </span>
+
+                            <strong id="severity-high">
+                                00
+                            </strong>
+
+                            <span class="severity-bar">
+
+                                <i
+                                    id="bar-high"
+                                    style="width:0%"
+                                ></i>
+
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="severity-row">
+
+                            <span class="severity-name medium">
+                                MEDIUM
+                            </span>
+
+                            <strong id="severity-medium">
+                                00
+                            </strong>
+
+                            <span class="severity-bar">
+
+                                <i
+                                    id="bar-medium"
+                                    style="width:0%"
+                                ></i>
+
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="severity-row">
+
+                            <span class="severity-name low">
+                                LOW
+                            </span>
+
+                            <strong id="severity-low">
+                                00
+                            </strong>
+
+                            <span class="severity-bar">
+
+                                <i
+                                    id="bar-low"
+                                    style="width:0%"
+                                ></i>
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= FULL-WIDTH DFIR INVESTIGATION STACK ================= -->
+
+        <section class="full-width-panels">
+
+
+            <!-- ================= ALERTS ================= -->
+
+            <div class="panel alerts-panel">
+
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TACTICAL FEED
+                        </span>
+
+                        <h3>
+                            Recent Security Intercepts
+                        </h3>
+
+                    </div>
+
+
+                    <button id="view-all-alerts" class="text-button">
+                        VIEW ALL ALERTS →
+                    </button>
+
+                </div>
+
+
+
+                <div class="table-wrapper">
+
+
+                    <table>
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ALERT CLASSIFICATION</th>
+                                <th>SEVERITY</th>
+                                <th>TARGET HOST</th>
+                                <th>SERVICE SOURCE</th>
+                                <th>TIMESTAMP</th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody id="alerts-table-body">
+
+                            <tr>
+
+                                <td colspan="5" style="text-align: center; color: var(--text-dim); padding: 22px;">
+                                    Awaiting scan data... Enter a target IP above and click <strong>[ INITIATE PROBE / SCAN ]</strong>.
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ================= TIMELINE ================= -->
+
+            <div class="panel timeline-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <span class="eyebrow">
+                            DFIR FORENSICS
+                        </span>
+
+                        <h3>
+                            Incident Intercept Timeline
+                        </h3>
+                    </div>
+
+                    <button id="expand-timeline" class="text-button">
+                     EXPAND TIMELINE →
+                    </button>
+                </div>
+
+
+                <div class="timeline" id="incident-timeline">
+
+                    <div class="timeline-item">
+
+                        <span class="timeline-dot"></span>
+
+                        <div>
+                            <strong>SYSTEM STANDBY // AWAITING TARGET</strong>
+
+                            <small>
+                                No target scanned yet. Enter a target IP above and click [ INITIATE PROBE / SCAN ].
+                            </small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= EVIDENCE ================= -->
+
+            <div class="panel evidence-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <span class="eyebrow">
+                            FORENSIC CHAIN OF CUSTODY
+                        </span>
+
+                        <h3>
+                            Evidence Artifact Inventory
+                        </h3>
+                    </div>
+
+                    <span class="evidence-live">
+                        ● ARTIFACTS VAULT
+                    </span>
+
+                </div>
+
+
+                <div class="evidence-summary">
+
+                    <div class="evidence-stat">
+                        <small>TOTAL ARTIFACTS</small>
+                        <strong id="evidence-total">0</strong>
+                    </div>
+
+                    <div class="evidence-stat">
+                        <small>CRITICAL FINDS</small>
+                        <strong id="evidence-new">0</strong>
+                    </div>
+
+                    <div class="evidence-stat">
+                        <small>TARGET NODE</small>
+                        <strong id="evidence-endpoint">—</strong>
+                    </div>
+
+                    <div class="evidence-stat">
+                        <small>VAULT STATUS</small>
+                        <strong>HASH VERIFIED</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="evidence-table-wrapper">
+
+                    <table class="evidence-table">
+
+                        <thead>
+                            <tr>
+                                <th>EVIDENCE ID</th>
+                                <th>ARTIFACT TYPE</th>
+                                <th>SOURCE VECTOR</th>
+                                <th>CUSTODY STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="evidence-table-body">
+
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: var(--text-dim); padding: 18px;">
+                                    Awaiting scan data... Enter a target IP above and click [ INITIATE PROBE / SCAN ].
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            
+            <!-- ================= LIVE FORENSIC TRIAGE (SSH INTERCEPT) ================= -->
+
+            <div class="panel triage-panel" id="triage-section">
+
+                <div class="panel-header">
+
+                    <div>
+                        <span class="eyebrow">
+                            HOST-LEVEL INTERCEPTION // AGENT
+                        </span>
+
+                        <h3>
+                            Live Forensic Host Triage (SSH Telemetry)
+                        </h3>
+                    </div>
+
+                    <span class="evidence-live">
+                        ● SSH AGENT ARMED
+                    </span>
+
+                </div>
+
+
+                <div class="evidence-summary">
+
+                    <div class="evidence-stat">
+                        <small>SSH STATUS</small>
+                        <strong id="triage-status">CONNECTING...</strong>
+                    </div>
+
+                    <div class="evidence-stat">
+                        <small>UID 0 ROOT CLONES</small>
+                        <strong id="triage-uids">0</strong>
+                    </div>
+
+                    <div class="evidence-stat">
+                        <small>STAGED IN /TMP</small>
+                        <strong id="triage-tmp">0</strong>
+                    </div>
+
+                    <div class="evidence-stat">
+                        <small>PERSISTENCE HOOKS</small>
+                        <strong id="triage-cron">0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="triage-grid">
+
+                    <div class="triage-box">
+                        <div class="triage-box-header">
+                            <span>ATTACKER COMMAND HISTORY (.bash_history)</span>
+                            <small class="badge critical">SUSPICIOUS</small>
+                        </div>
+                        <div class="triage-terminal danger" id="triage-bash-history">
+                            # Awaiting SSH session stream...
+                        </div>
+                    </div>
+
+                    <div class="triage-box">
+                        <div class="triage-box-header">
+                            <span>UID 0 ROOT ACCOUNTS (/etc/passwd)</span>
+                            <small class="badge high">PRIVILEGE ESC</small>
+                        </div>
+                        <div class="triage-terminal warning" id="triage-uid-zero">
+                            # Awaiting user database interrogation...
+                        </div>
+                    </div>
+
+                    <div class="triage-box">
+                        <div class="triage-box-header">
+                            <span>STAGED FILES & EXFIL TRACES (/tmp)</span>
+                            <small class="badge low">DROP ZONE</small>
+                        </div>
+                        <div class="triage-terminal" id="triage-tmp-files">
+                            # Awaiting filesystem directory walk...
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= CASE MANAGEMENT ================= -->
+
+            <div class="panel cases-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <span class="eyebrow">
+                            INCIDENT RESPONSE
+                        </span>
+
+                        <h3>
+                            Tactical Case Management
+                        </h3>
+                    </div>
+
+                    <span class="cases-live">
+                        ● INCIDENTS ACTIVE
+                    </span>
+
+                </div>
+
+
+                <div class="case-summary">
+
+                    <div class="case-stat">
+                        <small>OPEN CASES</small>
+                        <strong id="case-open">0</strong>
+                    </div>
+
+                    <div class="case-stat">
+                        <small>ACTIVE INCIDENTS</small>
+                        <strong id="case-incidents">0</strong>
+                    </div>
+
+                    <div class="case-stat">
+                        <small>HIGH PRIORITY</small>
+                        <strong id="case-high">0</strong>
+                    </div>
+
+                    <div class="case-stat">
+                        <small>RESPONSE TEAM</small>
+                        <strong>DEFCON SOC</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="case-table-wrapper">
+
+                    <table class="case-table">
+
+                        <thead>
+                            <tr>
+                                <th>CASE ID</th>
+                                <th>INCIDENT SUMMARY</th>
+                                <th>TARGET ENDPOINT</th>
+                                <th>PRIORITY</th>
+                                <th>DISPOSITION</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="case-table-body">
+
+                            <tr>
+                                <td colspan="5">
+                                    Loading incident cases...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= CVE VULNERABILITIES ================= -->
+
+            <div class="panel cve-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <span class="eyebrow">
+                            VULNERABILITY INTELLIGENCE
+                        </span>
+
+                        <h3>
+                            CVE Exposure & Known Exploits Matrix
+                        </h3>
+                    </div>
+
+                    <span class="cve-live">
+                        ● NVD DATABASE ARMED
+                    </span>
+
+                </div>
+
+
+                <div class="cve-summary">
+
+                    <div class="cve-stat">
+                        <small>TOTAL CVES DETECTED</small>
+                        <strong id="cve-total">00</strong>
+                    </div>
+
+                    <div class="cve-stat">
+                        <small>CRITICAL (CVSS 9+)</small>
+                        <strong id="cve-critical">00</strong>
+                    </div>
+
+                    <div class="cve-stat">
+                        <small>HIGH SEVERITY</small>
+                        <strong id="cve-high">00</strong>
+                    </div>
+
+                    <div class="cve-stat">
+                        <small>SERVICES AFFECTED</small>
+                        <strong id="cve-affected">00</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="cve-table-wrapper">
+
+                    <table class="cve-table">
+
+                        <thead>
+                            <tr>
+                                <th>CVE ID</th>
+                                <th>PORT / PROTO</th>
+                                <th>AFFECTED SERVICE</th>
+                                <th>DETECTED VERSION</th>
+                                <th>CVSS</th>
+                                <th>SEVERITY</th>
+                                <th>VULNERABILITY EXPLOIT SUMMARY</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="cve-table-body">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: var(--text-dim); padding: 22px;">
+                                    Awaiting scan... Enter a target IP above and click <strong>[ INITIATE PROBE / SCAN ]</strong> to detect CVE vulnerabilities.
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= MITRE ================= -->
+
+            <div class="panel mitre-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            THREAT INTELLIGENCE MATRIX
+                        </span>
+
+                        <h3>
+                            MITRE ATT&CK Kill-Chain Coverage
+                        </h3>
+
+                    </div>
+
+
+                    <span class="coverage" id="mitre-coverage">
+                        0% COVERAGE
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="mitre-grid"
+                    id="mitre-grid"
+                >
+
+                    <div style="grid-column: 1 / -1; text-align: center; color: var(--text-dim); padding: 22px; font-family: 'Share Tech Mono', monospace; font-size: 11px;">
+                        No MITRE ATT&CK techniques mapped. Enter a target IP above and click <strong>[ INITIATE PROBE / SCAN ]</strong>.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= REPORTS ================= -->
+
+            <div class="panel reports-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <span class="eyebrow">
+                            TACTICAL REPORTING
+                        </span>
+
+                        <h3>
+                            Security Assessment Briefing
+                        </h3>
+                    </div>
+
+                    <span class="reports-live">
+                        ● READY FOR BRIEFING
+                    </span>
+
+                </div>
+
+
+                <div class="report-summary">
+
+                    <div class="report-stat">
+                        <small>PROBE TARGET</small>
+                        <strong id="report-target">—</strong>
+                    </div>
+
+                    <div class="report-stat">
+                        <small>EXPOSED PORTS</small>
+                        <strong id="report-ports">0</strong>
+                    </div>
+
+                    <div class="report-stat">
+                        <small>CRITICAL FINDINGS</small>
+                        <strong id="report-critical">0</strong>
+                    </div>
+
+                    <div class="report-stat">
+                        <small>BRIEFING STATUS</small>
+                        <strong>READY</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="report-actions">
+
+                    <div class="report-info">
+                        <span>SENTINEL DFIR INTELLIGENCE ASSESSMENT</span>
+                        <small>
+                            Comprehensive network exposure analysis, known CVE exploit signatures, and forensic chain-of-custody brief.
+                        </small>
+                    </div>
+
+                    <button id="generate-report" class="report-button">
+                        DOWNLOAD TACTICAL REPORT →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer class="footer">
+
+            <span>
+                SENTINEL // TACTICAL SOC & DFIR WAR-ROOM
+            </span>
+
+            <span>
+                DEFCON STATUS:
+                <b>ACTIVE TELEMETRY</b>
+            </span>
+
+            <span>
+                TACTICAL HUD BUILD 2.5
+            </span>
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+
+
+<script src="app.js?v=tactical_war_room_v2"></script>
+
+
+
+<!-- ================= NEW CASE MODAL ================= -->
+
+<div id="new-case-modal" class="case-modal">
+
+    <div class="case-modal-box">
+
+        <div class="case-modal-header">
+            <div>
+                <span class="eyebrow">INCIDENT RESPONSE</span>
+                <h3>Open Incident Case File</h3>
+            </div>
+
+            <button id="close-case-modal" class="case-close">
+                ×
+            </button>
+        </div>
+
+        <div class="case-form">
+
+            <div class="case-form-group">
+                <label>CASE TITLE</label>
+                <input
+                    type="text"
+                    id="new-case-title"
+                    placeholder="e.g. Hostile Root Backdoor Engagement (Port 1524)"
+                >
+            </div>
+
+            <div class="case-form-row">
+
+                <div class="case-form-group">
+                    <label>THREAT SEVERITY</label>
+
+                    <select id="new-case-priority">
+                        <option value="CRITICAL">CRITICAL</option>
+                        <option value="HIGH">HIGH</option>
+                        <option value="MEDIUM">MEDIUM</option>
+                        <option value="LOW">LOW</option>
+                    </select>
+                </div>
+
+                <div class="case-form-group">
+                    <label>TARGET ENDPOINT</label>
+
+                    <input
+                        type="text"
+                        id="new-case-endpoint"
+                        value=""
+                        placeholder="Target IP..."
+                    >
+                </div>
+
+            </div>
+
+            <div class="case-form-group">
+                <label>INCIDENT INTELLIGENCE / DESCRIPTION</label>
+
+                <textarea
+                    id="new-case-description"
+                    rows="4"
+                    placeholder="Document indicators of compromise, compromised ports, and initial containment steps..."
+                ></textarea>
+            </div>
+
+            <div class="case-form-actions">
+
+                <button
+                    id="cancel-case"
+                    class="case-cancel"
+                >
+                    ABORT
+                </button>
+
+                <button
+                    id="create-case"
+                    class="case-create"
+                >
+                    CREATE CASE FILE →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= ALERTS MODAL ================= -->
+
+<div id="alerts-modal" class="alerts-modal">
+
+    <div class="alerts-modal-box">
+
+        <div class="alerts-modal-header">
+
+            <div>
+                <span class="eyebrow">
+                    TACTICAL SURVEILLANCE
+                </span>
+
+                <h3>
+                    All Intercepted Security Alerts
+                </h3>
+            </div>
+
+            <button id="close-alerts-modal" class="alerts-close">
+                ×
+            </button>
+
+        </div>
+
+        <div class="cve-summary">
+
+            <div class="cve-stat">
+                <small>TOTAL INTERCEPTS</small>
+                <strong id="modal-total-alerts">0</strong>
+            </div>
+
+            <div class="cve-stat">
+                <small>CRITICAL</small>
+                <strong id="modal-critical-alerts">0</strong>
+            </div>
+
+            <div class="cve-stat">
+                <small>HIGH</small>
+                <strong id="modal-high-alerts">0</strong>
+            </div>
+
+            <div class="cve-stat">
+                <small>MEDIUM</small>
+                <strong id="modal-medium-alerts">0</strong>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ALERT DETAILS</th>
+                        <th>SEVERITY</th>
+                        <th>PORT</th>
+                        <th>TARGET</th>
+                        <th>SERVICE</th>
+                    </tr>
+                </thead>
+
+                <tbody id="all-alerts-table-body">
+                    <tr>
+                        <td colspan="5">
+                            Loading alert records...
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= TIMELINE EXPAND MODAL ================= -->
+
+<div id="timeline-modal" class="timeline-modal">
+
+    <div class="timeline-modal-box">
+
+        <div class="timeline-modal-header">
+
+            <div>
+                <span class="eyebrow">
+                    DFIR INTERCEPT ARCHIVE
+                </span>
+
+                <h3>
+                    Complete Forensic Timeline
+                </h3>
+            </div>
+
+            <button id="close-timeline-modal" class="timeline-close">
+                ×
+            </button>
+
+        </div>
+
+        <div class="timeline" id="expanded-timeline">
+
+            <div class="timeline-item">
+
+                <span class="timeline-dot"></span>
+
+                <div>
+                    <strong>
+                        Loading telemetry...
+                    </strong>
+
+                    <small>
+                        Fetching backend telemetry
+                    </small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>
